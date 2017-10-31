@@ -6,9 +6,14 @@ An [Alfred Workflow](https://www.alfredapp.com/workflows/) to search on your Sal
 
 ## Download and Installation
 
-Download the workflow file from [GitHub releases](https://github.com/jereze/alfred-salesforce/releases) and install it by double-clicking on `Things.alfred3worklow`.
+Download the workflow file from [the latest GitHub release](https://github.com/jereze/alfred-salesforce/releases/latest) and install it by double-clicking on `Salesforce-0.0.1.alfredworkflow`.
 
 ## Usage
 
 * Use `sf > login` to connect to your Salesforce account.
 * Use the keyword `sf` to search on Salesforce.
+
+## Ressources
+
+* http://www.packal.org/workflow/search-salesforce
+* https://www.alfredforum.com/topic/10892-search-in-salesforce-alfred-3-worklfow/
