@@ -13,7 +13,7 @@ Download the workflow file from [the latest GitHub release](https://github.com/j
 * Use `sf > login` to connect to your Salesforce account.
 * Use the keyword `sf` to search on Salesforce.
 
-## Ressources
+## Resources
 
 * http://www.packal.org/workflow/search-salesforce
 * https://www.alfredforum.com/topic/10892-search-in-salesforce-alfred-3-worklfow/
