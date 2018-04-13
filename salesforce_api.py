@@ -3,14 +3,12 @@
 
 import requests
 from urllib import urlencode
-import logging
 import json
 import ssl
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.poolmanager import PoolManager
 
-logging.basicConfig(filename='logging.log',level=logging.INFO,format='%(asctime)s - %(filename)s - %(levelname)s : %(message)s')
 
 BASE_AUTH_URL = "https://login.salesforce.com/services/oauth2/authorize"
 REFRESH_TOKEN_URL = "https://login.salesforce.com/services/oauth2/token"
@@ -49,14 +47,14 @@ class Salesforce(object):
             r = self.session.request(method, self.instance_url+action, headers=headers, data=data, params=parameters, timeout=5)
         else:
             raise ValueError('Method should be get or post.')
-        logging.info('API %s call: %s' % (method, r.url) )
+        self.wf.logger.info('API %s call: %s' % (method, r.url) )
         if r.status_code == 401 and "INVALID_SESSION_ID" in r.text and _count < 1:
             self.refresh_access_token()
             return self.api_call(action, parameters, method, data, _count+1)
         if ((r.status_code == 200 and method == 'get') or (r.status_code == 201 and method == 'post')):
             return r.json()
         else:
-            logging.debug(r.text)
+            self.wf.logger.debug(r.text)
             raise ValueError('API error when calling %s (%i): %s' % (r.url, r.status_code, r.text))
 
     def save_new_access_token(self, access_token):
@@ -77,13 +75,13 @@ class Salesforce(object):
             "client_id": CLIENT_ID,
             "format": "json"
         })
-        logging.info(self.refresh_token)
-        logging.info('API %s call: %s' % ('post', r.url) )
+        self.wf.logger.info(self.refresh_token)
+        self.wf.logger.info('API %s call: %s' % ('post', r.url) )
         if r.status_code < 300 and "access_token" in r.json().keys():
             self.save_new_access_token(r.json().get("access_token"))
-            logging.info('New access token saved.')
+            self.wf.logger.info('New access token saved.')
         else:
-            logging.debug(r.text)
+            self.wf.logger.debug(r.text)
             raise ValueError('API error when refreshing the token (%i): %s' % (r.status_code, r.text))
 
 

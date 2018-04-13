@@ -5,9 +5,7 @@ from workflow import Workflow, ICON_WEB, ICON_WARNING, ICON_ACCOUNT, ICON_SWITCH
 import sys
 import urllib
 import salesforce_api
-import logging
 
-logging.basicConfig(filename='logging.log',level=logging.INFO,format='%(asctime)s - %(filename)s - %(levelname)s : %(message)s')
 
 
 SETTINGS = [

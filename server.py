@@ -5,14 +5,12 @@ import BaseHTTPServer
 import json
 import urllib
 #import subprocess
-import logging
 from os import curdir, sep
 from workflow import Workflow
 
-logging.basicConfig(filename='logging.log',level=logging.INFO,format='%(asctime)s - %(filename)s - %(levelname)s : %(message)s')
-logging.info('Loading server config')
 
 wf = Workflow()
+wf.logger.info('Loading server config')
 
 _running = True
 def keep_running():
@@ -26,12 +24,12 @@ def stop_running():
 # HTTP request handler
 class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
-        logging.info('GET request')
-        logging.debug('Path: %s' % self.path)
-        logging.debug('Headers: \n%s' % self.headers)
+        wf.logger.info('GET request')
+        wf.logger.debug('Path: %s' % self.path)
+        wf.logger.debug('Headers: \n%s' % self.headers)
 
         if self.path=="/":
-            logging.info('PATH = /')
+            wf.logger.info('PATH = /')
 
             self.send_response(200)
             self.send_header('Content-type','text/html')
@@ -41,7 +39,7 @@ class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             f.close()
 
         elif self.path.startswith("/details/"):
-            logging.info('PATH = /details/*')
+            wf.logger.info('PATH = /details/*')
 
             try:
                 self.send_response(200)
@@ -50,16 +48,16 @@ class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
                 details = self.path.replace("/details/", "")
                 details = urllib.unquote(details)
-                logging.debug(details)
+                wf.logger.debug(details)
                 details = json.loads(details)
-                logging.info('Receiving details: %s' % ', '.join(details.keys()))
+                wf.logger.info('Receiving details: %s' % ', '.join(details.keys()))
 
                 #subprocess.call(['python','./drive_refresh.py'])
                 wf.save_password('instance_url', details['instance_url'])
                 wf.save_password('refresh_token', details['refresh_token'])
                 wf.save_password('access_token', details['access_token'])
 
-                logging.info('Details saved in Keychain')
+                wf.logger.info('Details saved in Keychain')
 
                 self.wfile.write('{"status":"ok"}')
 
@@ -73,7 +71,7 @@ class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             stop_running()
 
         else:
-            logging.info('PATH unknown')
+            wf.logger.info('PATH unknown')
 
             self.send_response(400)
             self.end_headers()
@@ -83,12 +81,12 @@ class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 def start_server():
     HttpHandler.protocol_version = "HTTP/1.0"
     server = BaseHTTPServer.HTTPServer(('localhost', 2576), HttpHandler)
-    logging.info('Server started on port 2576')
+    wf.logger.info('Server started on port 2576')
     server.timeout = 300
     server.handle_request()
     while keep_running():
         server.handle_request()
-    logging.info('Server stopped on port 2576')
+    wf.logger.info('Server stopped on port 2576')
 
 
 def run_while_true(server_class=BaseHTTPServer.HTTPServer,

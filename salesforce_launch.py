@@ -6,11 +6,9 @@ from workflow.notify import notify
 import sys
 import salesforce_api
 import subprocess
-import logging
 import os
 import requests
 
-logging.basicConfig(filename='logging.log',level=logging.INFO,format='%(asctime)s - %(filename)s - %(levelname)s : %(message)s')
 
 
 def main(wf):
@@ -54,23 +52,25 @@ def main(wf):
 
     elif query_0 == 'debug':
 
-        logging.info(os.path.dirname(requests.__file__))
-        logging.info(requests.get("https://www.howsmyssl.com/a/check").text)
-        notify("Debug sent to logs")
+        wf.logger.info(wf.settings)
+        wf.logger.info(os.path.dirname(requests.__file__))
+        wf.logger.info(requests.get("https://www.howsmyssl.com/a/check").text)
+        notify("Opening of the folder that contains debug logs")
+        wf.open_cachedir()
 
     elif query_0 == 'switch':
 
         use_classic = wf.settings.get("use_classic", False)
-        logging.info("use_classic = %s" % use_classic)
+        
 
         if use_classic == True:
             wf.settings["use_classic"] = False
             wf.settings.save()
-            notify('Salesforce', 'Link will open in the Lightning interface')
+            notify('Salesforce', 'Links will open in the Lightning interface')
         else:
             wf.settings["use_classic"] = True
             wf.settings.save()
-            notify('Salesforce', 'Link will open in the Classic interface')
+            notify('Salesforce', 'Links will open in the Classic interface')
 
 
     elif query_0.startswith('http'):
