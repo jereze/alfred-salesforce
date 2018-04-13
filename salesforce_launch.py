@@ -58,6 +58,21 @@ def main(wf):
         logging.info(requests.get("https://www.howsmyssl.com/a/check").text)
         notify("Debug sent to logs")
 
+    elif query_0 == 'switch':
+
+        use_classic = wf.settings.get("use_classic", False)
+        logging.info("use_classic = %s" % use_classic)
+
+        if use_classic == True:
+            wf.settings["use_classic"] = False
+            wf.settings.save()
+            notify('Salesforce', 'Link will open in the Lightning interface')
+        else:
+            wf.settings["use_classic"] = True
+            wf.settings.save()
+            notify('Salesforce', 'Link will open in the Classic interface')
+
+
     elif query_0.startswith('http'):
 
         subprocess.call(['open', query_0])

@@ -28,6 +28,12 @@ SETTINGS = [
         'autocomplete': '> Debug',
         'arg': 'debug',
         'icon': ICON_SWITCH
+    },
+    {
+        'title': 'Switch opening results in Classic/Lightning',
+        'autocomplete': '> Switch opening results in Classic/Lightning',
+        'arg': 'switch',
+        'icon': ICON_SWITCH
     }
 ]
 
@@ -63,6 +69,12 @@ SEARCH = [
 ]
 
 access_token = None
+
+def get_object_url(instance_url, object_id, use_classic = False):
+    if use_classic == True:
+        return "%s/%s" % (instance_url, object_id)
+    else:
+        return "%s/one/one.app#/sObject/%s/view" % (instance_url, object_id)
 
 def main(wf):
 
@@ -128,22 +140,23 @@ def main(wf):
 
         for r in results.get('searchRecords', []):
 
+            use_classic = wf.settings.get("use_classic", False)
 
             if r.get("attributes").get("type") == "Account":
                 sub = r.get("Type")
-                url = "%s/one/one.app#/sObject/%s/view" % (instance_url, r.get("Id"))
+                url = get_object_url(instance_url, r.get("Id"), use_classic)
                 ico = './account.png'
             elif r.get("attributes").get("type") == "Contact":
                 sub = r.get("Email")
-                url = "%s/one/one.app#/sObject/%s/view" % (instance_url, r.get("Id"))
+                url = get_object_url(instance_url, r.get("Id"), use_classic)
                 ico = './contact.png'
             elif r.get("attributes").get("type") == "Opportunity":
                 sub = "%s %s" % (r.get("StageName"), r.get("CloseDate"))
-                url = "%s/one/one.app#/sObject/%s/view" % (instance_url, r.get("Id"))
+                url = get_object_url(instance_url, r.get("Id"), use_classic)
                 ico = './opportunity.png'
             elif r.get("attributes").get("type") == "Lead":
                 sub = ""
-                url = "%s/one/one.app#/sObject/%s/view" % (instance_url, r.get("Id"))
+                url = get_object_url(instance_url, r.get("Id"), use_classic)
                 ico = './lead.png'
 
             wf.add_item(
