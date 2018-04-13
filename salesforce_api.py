@@ -66,8 +66,6 @@ class Salesforce(object):
         self.access_token = access_token
         if self.wf is not None:
             self.wf.save_password('access_token', access_token)
-            from workflow.notify import notify
-            notify('Salesforce', 'New access token.')
 
     def refresh_access_token(self):
         """
