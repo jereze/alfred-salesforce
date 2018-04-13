@@ -14,7 +14,7 @@ Download the workflow file from [the latest GitHub release](https://github.com/j
 * Use the keyword `sf` to search on Salesforce.
 * Use `sf > switch` to switch the opening between Salesforce Classic and Salesforce Lightning.
 
-## Ressources
+## Resources
 
 * http://www.packal.org/workflow/search-salesforce
 * https://www.alfredforum.com/topic/10892-search-in-salesforce-alfred-3-worklfow/
