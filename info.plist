@@ -127,7 +127,7 @@ python salesforce_search.py "$query"</string>
 		</dict>
 	</dict>
 	<key>version</key>
-	<string>0.0.1</string>
+	<string>0.0.2</string>
 	<key>webaddress</key>
 	<string>https://github.com/jereze/alfred-salesforce</string>
 </dict>

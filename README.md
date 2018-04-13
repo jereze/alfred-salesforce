@@ -6,12 +6,13 @@ An [Alfred Workflow](https://www.alfredapp.com/workflows/) to search on your Sal
 
 ## Download and Installation
 
-Download the workflow file from [the latest GitHub release](https://github.com/jereze/alfred-salesforce/releases/latest) and install it by double-clicking on `Salesforce-0.0.1.alfredworkflow`.
+Download the workflow file from [the latest GitHub release](https://github.com/jereze/alfred-salesforce/releases/latest) and install it by double-clicking on `Salesforce-0.0.2.alfredworkflow`.
 
 ## Usage
 
 * Use `sf > login` to connect to your Salesforce account.
 * Use the keyword `sf` to search on Salesforce.
+* Use `sf > switch` to switch the opening between Salesforce Classic and Salesforce Lightning.
 
 ## Ressources
 
