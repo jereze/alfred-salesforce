@@ -133,7 +133,7 @@ def main(wf):
         sf = salesforce_api.Salesforce(wf, access_token, refresh_token, instance_url)
 
         results = sf.api_call('/services/data/v40.0/search/', parameters={
-            'q': "FIND {%s} IN ALL FIELDS RETURNING Account (Id, Name, Type), Contact (Id, Name, Email), Opportunity (Id, Name, StageName, CloseDate), Lead (Id, Name) WITH METADATA='LABELS' " % query.replace("\\", "\\\\").replace("'", "\\'")
+            'q': "FIND {%s} IN ALL FIELDS RETURNING Account (Id, Name, Type), Opportunity (Id, Name, StageName, CloseDate), Contact (Id, Name, Email), Lead (Id, Name) WITH METADATA='LABELS' " % query.replace("\\", "\\\\").replace("'", "\\'")
         })
 
         for r in results.get('searchRecords', []):
