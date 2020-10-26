@@ -39,8 +39,11 @@ def main(wf):
     if query_0 == 'login':
 
         notify('Salesforce', 'Please connect to your Salesforce account')
+        wf.logger.info("Launch: nohup python ./server.py")
         subprocess.Popen(['nohup', 'python', './server.py'])
-        subprocess.call(['open', salesforce_api.get_oauth_url()])
+        url = salesforce_api.get_oauth_url()
+        wf.logger.info("Open: %s" % url)
+        subprocess.call(['open', url])
 
     elif query_0 == 'logout':
 
