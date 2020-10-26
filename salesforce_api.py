@@ -1,13 +1,8 @@
 #!/usr/bin/python
 # encoding: utf-8
 
-import requests
 from urllib import urlencode
-import json
-import ssl
-
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.poolmanager import PoolManager
+from workflow.web import get, post
 
 
 BASE_AUTH_URL = "https://login.salesforce.com/services/oauth2/authorize"
@@ -30,7 +25,6 @@ class Salesforce(object):
         self.access_token = access_token
         self.refresh_token = refresh_token
         self.instance_url = instance_url
-        self.session = requests.Session()
 
     def api_call(self, action, parameters = {}, method = 'get', data = {}, _count = 0):
         """
@@ -42,9 +36,9 @@ class Salesforce(object):
             'Authorization': 'Bearer %s' % self.access_token
         }
         if method == 'get':
-            r = self.session.request(method, self.instance_url+action, headers=headers, params=parameters, timeout=5)
+            r = get(self.instance_url+action, headers=headers, params=parameters, timeout=5)
         elif method == 'post':
-            r = self.session.request(method, self.instance_url+action, headers=headers, data=data, params=parameters, timeout=5)
+            r = post(self.instance_url+action, headers=headers, data=data, params=parameters, timeout=5)
         else:
             raise ValueError('Method should be get or post.')
         self.wf.logger.info('API %s call: %s' % (method, r.url) )
@@ -69,7 +63,7 @@ class Salesforce(object):
         """
         OAuth Refresh Token Process
         """
-        r = self.session.request('post', REFRESH_TOKEN_URL, timeout=5, data={
+        r = post(REFRESH_TOKEN_URL, timeout=5, data={
             "grant_type": "refresh_token",
             "refresh_token": self.refresh_token,
             "client_id": CLIENT_ID,

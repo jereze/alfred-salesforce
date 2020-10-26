@@ -3,11 +3,11 @@
 
 from workflow import Workflow, ICON_WEB, ICON_WARNING, PasswordNotFound
 from workflow.notify import notify
+from workflow.web import get
 import sys
 import salesforce_api
 import subprocess
 import os
-import requests
 
 
 
@@ -53,8 +53,8 @@ def main(wf):
     elif query_0 == 'debug':
 
         wf.logger.info(wf.settings)
-        wf.logger.info(os.path.dirname(requests.__file__))
-        wf.logger.info(requests.get("https://www.howsmyssl.com/a/check").text)
+        wf.logger.info(os.path.dirname(os.path.abspath(__file__)))
+        wf.logger.info(get("https://www.howsmyssl.com/a/check").text)
         notify("Opening of the folder that contains debug logs")
         wf.open_cachedir()
 
