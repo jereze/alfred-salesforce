@@ -36,7 +36,7 @@
 			<key>config</key>
 			<dict>
 				<key>concurrently</key>
-				<false/>
+				<true/>
 				<key>escaping</key>
 				<integer>68</integer>
 				<key>script</key>
