@@ -6,7 +6,7 @@ An [Alfred Workflow](https://www.alfredapp.com/workflows/) to search on your Sal
 
 ## Download and Installation
 
-Download the workflow file from [the latest GitHub release](https://github.com/jereze/alfred-salesforce/releases/latest) and install it by double-clicking on `Salesforce-0.0.3.alfredworkflow`.
+Download the workflow file from [the latest GitHub release](https://github.com/jereze/alfred-salesforce/releases/latest) and install it by double-clicking on `Salesforce-0.0.4.alfredworkflow`.
 
 ## Usage
 
@@ -18,6 +18,11 @@ Download the workflow file from [the latest GitHub release](https://github.com/j
 
 
 ## Changelog
+
+**Version 0.0.4 (2020-11-03)**
+
+* Fix error in access renewal
+* Automatically check updates of the workflow and suggest installation
 
 **Version 0.0.3 (2020-10-26)**
 
