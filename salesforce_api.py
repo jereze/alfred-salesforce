@@ -42,7 +42,7 @@ class Salesforce(object):
         else:
             raise ValueError('Method should be get or post.')
         self.wf.logger.info('API %s call: %s' % (method, r.url) )
-        if r.status_code == 401 and "INVALID_SESSION_ID" in r.text and _count < 1:
+        if r.status_code == 401 and _count < 1:
             self.refresh_access_token()
             return self.api_call(action, parameters, method, data, _count+1)
         if ((r.status_code == 200 and method == 'get') or (r.status_code == 201 and method == 'post')):
