@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # encoding: utf-8
 
-from workflow import Workflow, ICON_WEB, ICON_WARNING, ICON_ACCOUNT, ICON_SWITCH, PasswordNotFound
+from workflow import Workflow, ICON_WEB, ICON_WARNING, ICON_ACCOUNT, ICON_SWITCH, ICON_INFO, PasswordNotFound
 import sys
 import urllib
 import salesforce_api
@@ -75,6 +75,15 @@ def get_object_url(instance_url, object_id, use_classic = False):
         return "%s/one/one.app#/sObject/%s/view" % (instance_url, object_id)
 
 def main(wf):
+
+    # Add a notification if upgrade available
+    if wf.update_available:
+        wf.add_item(
+            'New version available',
+            'Action this to install the update',
+            autocomplete='workflow:update',
+            icon=ICON_INFO
+        )
 
     # Get query from Alfred
     if len(wf.args):
@@ -179,5 +188,8 @@ def main(wf):
     return 0
 
 if __name__ == u"__main__":
-    wf = Workflow()
+    wf = Workflow(update_settings={
+        'github_slug': 'jereze/alfred-salesforce',
+        'frequency': 5,
+    })
     sys.exit(wf.run(main))
