@@ -1,9 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # encoding: utf-8
 
-from workflow import Workflow, ICON_WEB, ICON_WARNING, ICON_ACCOUNT, ICON_SWITCH, ICON_INFO, PasswordNotFound
+from workflow import Workflow, ICON_ERROR, ICON_ACCOUNT, ICON_SWITCH, ICON_INFO, PasswordNotFound
 import sys
-import urllib
 import salesforce_api
 
 
@@ -133,7 +132,7 @@ def main(wf):
             'No configuration for Salesforce.',
             'Type "sf > login" to set your Salesforce account.',
             valid=False,
-            icon=ICON_WARNING,
+            icon=ICON_ERROR,
             autocomplete= '> login'
         )
 
@@ -187,7 +186,7 @@ def main(wf):
     wf.send_feedback()
     return 0
 
-if __name__ == u"__main__":
+if __name__ == "__main__":
     wf = Workflow(update_settings={
         'github_slug': 'jereze/alfred-salesforce',
         'frequency': 5,

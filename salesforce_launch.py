@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # encoding: utf-8
 
-from workflow import Workflow, ICON_WEB, ICON_WARNING, PasswordNotFound
+from workflow import Workflow, PasswordNotFound
 from workflow.notify import notify
 from workflow.web import get
 import sys
@@ -39,8 +39,8 @@ def main(wf):
     if query_0 == 'login':
 
         notify('Salesforce', 'Please connect to your Salesforce account')
-        wf.logger.info("Launch: nohup python ./server.py")
-        subprocess.Popen(['nohup', 'python', './server.py'])
+        wf.logger.info("Launch: nohup python3 ./server.py")
+        subprocess.Popen(['nohup', 'python3', './server.py'])
         url = salesforce_api.get_oauth_url()
         wf.logger.info("Open: %s" % url)
         subprocess.call(['open', url])
@@ -85,6 +85,6 @@ def main(wf):
         notify('Else', 'My Text')
 
 
-if __name__ == u"__main__":
+if __name__ == "__main__":
     wf = Workflow()
     sys.exit(wf.run(main))

@@ -42,7 +42,7 @@
 				<key>script</key>
 				<string>query=$1
 
-python salesforce_launch.py "$query"</string>
+python3 salesforce_launch.py "$query"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -64,6 +64,8 @@ python salesforce_launch.py "$query"</string>
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -85,7 +87,7 @@ python salesforce_launch.py "$query"</string>
 				<key>script</key>
 				<string>query=$1
 
-python salesforce_search.py "$query"</string>
+python3 salesforce_search.py "$query"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -104,7 +106,7 @@ python salesforce_search.py "$query"</string>
 			<key>uid</key>
 			<string>6E4EA267-77D1-4426-84C4-E519D577FDF0</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -114,20 +116,22 @@ python salesforce_search.py "$query"</string>
 		<key>5619CCCC-EF17-4C54-9648-F47870937908</key>
 		<dict>
 			<key>xpos</key>
-			<integer>460</integer>
+			<real>460</real>
 			<key>ypos</key>
-			<integer>150</integer>
+			<real>150</real>
 		</dict>
 		<key>6E4EA267-77D1-4426-84C4-E519D577FDF0</key>
 		<dict>
 			<key>xpos</key>
-			<integer>150</integer>
+			<real>150</real>
 			<key>ypos</key>
-			<integer>150</integer>
+			<real>150</real>
 		</dict>
 	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
 	<key>version</key>
-	<string>0.0.4</string>
+	<string>0.0.5</string>
 	<key>webaddress</key>
 	<string>https://github.com/jereze/alfred-salesforce</string>
 </dict>

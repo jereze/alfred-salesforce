@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # encoding: utf-8
 #
 # Copyright (c) 2013 deanishe@deanishe.net.
@@ -38,7 +38,7 @@ Options:
 
 """
 
-from __future__ import print_function
+
 
 from contextlib import contextmanager
 from fnmatch import fnmatch
@@ -101,7 +101,7 @@ class TechnicolorFormatter(logging.Formatter):
 
     """
 
-    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
+    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = list(range(8))
 
     RESET = '\033[0m'
     COLOUR_BASE = '\033[1;{:d}m'
@@ -178,12 +178,13 @@ def init_logging():
 
 def safename(name):
     """Make name filesystem and web-safe."""
-    if isinstance(name, str):
-        name = unicode(name, 'utf-8')
+    if isinstance(name, bytes):
+        name = str(name, 'utf-8')
 
     # remove non-ASCII
     s = normalize('NFD', name)
     b = s.encode('us-ascii', 'ignore')
+    b = b.decode('utf-8')
 
     clean = []
     for c in b:
@@ -231,12 +232,13 @@ def build_workflow(workflow_dir, outputdir, overwrite=False, verbose=False,
     with chdir(workflow_dir):
         # ------------------------------------------------------------
         # Read workflow metadata from info.plist
-        info = plistlib.readPlist(u'info.plist')
-        version = None
-        if not os.path.exists(u'info.plist'):
-            log.error(u'info.plist not found')
+        if not os.path.exists('info.plist'):
+            log.error('info.plist not found')
             return False
+        with open('info.plist', 'rb') as f:
+            info = plistlib.load(f)
 
+        version = None
         if 'version' in info and info.get('version'):
             version = info['version']
 
@@ -275,7 +277,7 @@ def build_workflow(workflow_dir, outputdir, overwrite=False, verbose=False,
         # build workflow
         command = ['zip']
         if not verbose:
-            command.append(u'-q')
+            command.append('-q')
 
         command.append(zippath)
 
@@ -321,7 +323,7 @@ def main(args=None):
     workflow_dirs = [os.path.abspath(p) for p in args['<workflow-dir>']]
     verbose = log.level == logging.DEBUG
 
-    log.debug(u'outputdir=%r, workflow_dirs=%r', outputdir, workflow_dirs)
+    log.debug('outputdir=%r, workflow_dirs=%r', outputdir, workflow_dirs)
 
     # ------------------------------------------------------------
     # Build workflow(s)
@@ -339,3 +341,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))
+

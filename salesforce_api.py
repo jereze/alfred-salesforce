@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # encoding: utf-8
 
-from urllib import urlencode
+from urllib.parse import urlencode
 from workflow.web import get, post
 
 
@@ -71,7 +71,7 @@ class Salesforce(object):
         })
         self.wf.logger.info(self.refresh_token)
         self.wf.logger.info('API %s call: %s' % ('post', r.url) )
-        if r.status_code < 300 and "access_token" in r.json().keys():
+        if r.status_code < 300 and "access_token" in list(r.json().keys()):
             self.save_new_access_token(r.json().get("access_token"))
             self.wf.logger.info('New access token saved.')
         else:
@@ -83,3 +83,4 @@ class Salesforce(object):
         r = self.api_call('/services/data/v40.0/search/', parameters={
             'q': "FIND {%s} IN ALL FIELDS RETURNING Account (Id, Name), Contact (Id, Name), Opportunity (Id, Name), Lead (Id, Name) WITH METADATA='LABELS' " % term
         })
+

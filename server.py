@@ -1,12 +1,17 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # encoding: utf-8
 
-import BaseHTTPServer
+import http.server
 import json
-import urllib
+import urllib.request, urllib.parse, urllib.error
 #import subprocess
 from os import curdir, sep
 from workflow import Workflow
+
+def ensure_bytes(s):
+    if isinstance(s, str):
+        s = s.encode('utf-8')
+    return s
 
 
 wf = Workflow()
@@ -22,7 +27,7 @@ def stop_running():
 
 
 # HTTP request handler
-class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class HttpHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         wf.logger.info('GET request')
         wf.logger.debug('Path: %s' % self.path)
@@ -34,7 +39,7 @@ class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type','text/html')
             self.end_headers()
-            f = open(curdir + sep + 'front.html') 
+            f = open(curdir + sep + 'front.html', "rb") 
             self.wfile.write(f.read())
             f.close()
 
@@ -47,10 +52,10 @@ class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 self.end_headers()
 
                 details = self.path.replace("/details/", "")
-                details = urllib.unquote(details)
+                details = urllib.parse.unquote(details)
                 wf.logger.debug(details)
                 details = json.loads(details)
-                wf.logger.info('Receiving details: %s' % ', '.join(details.keys()))
+                wf.logger.info('Receiving details: %s' % ', '.join(list(details.keys())))
 
                 #subprocess.call(['python','./drive_refresh.py'])
                 wf.save_password('instance_url', details['instance_url'])
@@ -59,14 +64,14 @@ class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
                 wf.logger.info('Details saved in Keychain')
 
-                self.wfile.write('{"status":"ok"}')
+                self.wfile.write(ensure_bytes('{"status":"ok"}'))
 
             except:
 
                 self.send_response(300)
                 self.send_header('Content-type','application/json')
                 self.end_headers()
-                self.wfile.write('{"status":"error"}')
+                self.wfile.write(ensure_bytes('{"status":"error"}'))
 
             stop_running()
 
@@ -75,12 +80,12 @@ class HttpHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
             self.send_response(400)
             self.end_headers()
-            self.wfile.write('Error')
+            self.wfile.write(ensure_bytes('Error'))
 
 
 def start_server():
     HttpHandler.protocol_version = "HTTP/1.0"
-    server = BaseHTTPServer.HTTPServer(('localhost', 2576), HttpHandler)
+    server = http.server.HTTPServer(('localhost', 2576), HttpHandler)
     wf.logger.info('Server started on port 2576')
     server.timeout = 300
     server.handle_request()
@@ -89,8 +94,8 @@ def start_server():
     wf.logger.info('Server stopped on port 2576')
 
 
-def run_while_true(server_class=BaseHTTPServer.HTTPServer,
-                   handler_class=BaseHTTPServer.BaseHTTPRequestHandler):
+def run_while_true(server_class=http.server.HTTPServer,
+                   handler_class=http.server.BaseHTTPRequestHandler):
     """
     This assumes that keep_running() is a function of no arguments which
     is tested initially and after each request.  If its return value
@@ -105,3 +110,4 @@ def run_while_true(server_class=BaseHTTPServer.HTTPServer,
 if __name__ == '__main__':
     start_server()
     #run_while_true(BaseHTTPServer.HTTPServer, HttpHandler)
+
