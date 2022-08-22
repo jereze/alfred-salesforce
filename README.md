@@ -6,7 +6,7 @@ An [Alfred Workflow](https://www.alfredapp.com/workflows/) to search on your Sal
 
 ## Download and Installation
 
-Download the workflow file from [the latest GitHub release](https://github.com/jereze/alfred-salesforce/releases/latest) and install it by double-clicking on `Salesforce-0.0.4.alfredworkflow`.
+Download the workflow file from [the latest GitHub release](https://github.com/jereze/alfred-salesforce/releases/latest) and install it by double-clicking on `Salesforce-0.0.5.alfredworkflow`.
 
 You need to have Python 3 installed. If this is not the case, you can install [Xcode command line tools (click to read instructions)](https://macpaw.com/how-to/install-command-line-tools) provided by Apple.
 
