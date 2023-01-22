@@ -141,7 +141,7 @@ def main(wf):
         sf = salesforce_api.Salesforce(wf, access_token, refresh_token, instance_url)
 
         results = sf.api_call('/services/data/v40.0/search/', parameters={
-            'q': "FIND {%s} IN ALL FIELDS RETURNING Account (Id, Name, Type), Opportunity (Id, Name, StageName, CloseDate), Contact (Id, Name, Email), Lead (Id, Name) WITH METADATA='LABELS' " % query.replace("\\", "\\\\").replace("'", "\\'")
+            'q': "FIND {%s} IN ALL FIELDS RETURNING Account (Id, Name, Type), Opportunity (Id, Name, StageName, CloseDate), Contact (Id, Name, Email), Lead (Id, Name), Case (Id, CaseNumber), Order (Id, OrderNumber), Contract(Id, ContractNumber), SBQQ__Quote__c(Id, Name) WITH METADATA='LABELS' " % query.replace("\\", "\\\\").replace("'", "\\'")
         })
 
         for r in results.get('searchRecords', []):
@@ -149,24 +149,48 @@ def main(wf):
             use_classic = wf.settings.get("use_classic", False)
 
             if r.get("attributes").get("type") == "Account":
+                title=r.get("Name")
                 sub = r.get("Type")
                 url = get_object_url(instance_url, r.get("Id"), use_classic)
                 ico = './account.png'
             elif r.get("attributes").get("type") == "Contact":
+                title=r.get("Name")
                 sub = r.get("Email")
                 url = get_object_url(instance_url, r.get("Id"), use_classic)
                 ico = './contact.png'
             elif r.get("attributes").get("type") == "Opportunity":
+                title=r.get("Name")
                 sub = "%s %s" % (r.get("StageName"), r.get("CloseDate"))
                 url = get_object_url(instance_url, r.get("Id"), use_classic)
                 ico = './opportunity.png'
             elif r.get("attributes").get("type") == "Lead":
-                sub = ""
+                title=r.get("Name")
+                sub = "%s %s" % (r.get("StageName"), r.get("Name"))
                 url = get_object_url(instance_url, r.get("Id"), use_classic)
                 ico = './lead.png'
+            elif r.get("attributes").get("type") == "Case":
+                title=r.get("CaseNumber")
+                sub = r.get("Status")
+                url = get_object_url(instance_url, r.get("Id"), use_classic)
+                ico = './case.png'
+            elif r.get("attributes").get("type") == "Order":
+                title=r.get("OrderNumber")
+                sub = r.get("Status")
+                url = get_object_url(instance_url, r.get("Id"), use_classic)
+                ico = './order.png'
+            elif r.get("attributes").get("type") == "Contract":
+                title=r.get("ContractNumber")
+                sub = r.get("Id")
+                url = get_object_url(instance_url, r.get("Id"), use_classic)
+                ico = './contract.png'
+            elif r.get("attributes").get("type") == "SBQQ__Quote__c":
+                title=r.get("Name")
+                sub = r.get("Type")
+                url = get_object_url(instance_url, r.get("Id"), use_classic)
+                ico = './quote.png'
 
             wf.add_item(
-                title="%s (%s)" % (r.get("Name"), r.get("attributes").get("type")),
+                title=title,
                 subtitle=sub,
                 arg=url,
                 valid=True,
